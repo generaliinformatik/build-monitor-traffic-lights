@@ -14,10 +14,14 @@ siehe config.yml
 + Raspberry Pi 4
 
 ### Software
-+ Git
-+ AVEA Python Lib (Lampe steuern)
-+ Python3
-+ BluPy (Bluetooth)
+- Python 3.x
+- Python Module
+    - avea
+    - requests
+    - pyyaml
+    - pygame
+- Git
+- BluPy (Bluetooth)
 
 ## Skripte
 ### lampe/lampe.py
@@ -59,6 +63,12 @@ Auf dieser Seite ist die Einrichtung nochmal beschrieben: https://pypi.org/proje
     - Pygame `sudo pip3 install --proxy http://<user>:<pw>@<proxy address>:<proxy port> --upgrade pygame`
     - Avea ` sudo pip3 install --proxy http://<user>:<pw>@<proxy address>:<proxy port> --upgrade avea`
     - Pyyaml `sudo pip3 install --proxy http://<user>:<pw>@<proxy address>:<proxy port> --upgrade pyyaml`
+
+Alternativ können die benötigten Module über folgenden Befehl installiert werden:
+
+```bash
+pip3 install -r requirements.txt
+```
 
 - GIT Integration
 ...installieren
