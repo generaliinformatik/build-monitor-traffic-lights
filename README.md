@@ -36,6 +36,10 @@ siehe config.yml
 - parst IP adresse von eth0 und schreibt sie zur weiteren Verarbeitung auf die Konsole
 
 ## Systemanpassungen
+ - Konfiguration anpassen
+
+Die beiliegende [config.yml.sample](config.yml.sample) beinhaltet die erforderliche Struktur mit Beispielangaben. Die Datei ist vor Inbetriebnahme als config.yml umzubenennen und die Inhalte auf das jeweilige EInsatzszenario anzupassen.
+
  - Timeserver setzten
  In die Datei '/etc/systemd/timesyncd.conf' folegende Werte einfügen:
  [Time]
