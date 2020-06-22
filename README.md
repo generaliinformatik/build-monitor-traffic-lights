@@ -5,6 +5,10 @@
 - Sind alle Jobs gefixed worden, wird die Ampel wieder *grün*
 - Bei Fehlern im Skript blinkt die orangene Lampe
 
+## Archite0cture
+
+![architecture](images/png/bulbs_architecture.png)
+
 ### Jobs
 siehe config.yml
 
