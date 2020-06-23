@@ -1,0 +1,29 @@
+home: /home/pi/jenkins-monitor
+jenkins:
+  url: https://<base url to jenkins>
+  port: 8080
+  jobs:
+# Portal Images
+    '<build name>': <suffix part of pipeline url>
+    '<build name>': <suffix part of pipeline url>
+    '<build name>': <suffix part of pipeline url>
+  fail_status:
+    - Failed
+    - Aborted
+    - Fehlgeschlagen
+    - Abgebrochen
+    - Unstable
+    - Instabil
+  success_status:
+    - Erfolgreich
+    - Success
+  historyfile: build_history
+mattermost:
+  channel: '#<name of channel>'
+  url: https://<base url to mattermost cannel>
+  updateFile: lastMattermostUpdate
+  timeToWait: 5
+bulbs:
+  bulbaddrgruen: "xx:xx:xx:xx:xx:xx"
+  bulbaddrrot: "xx:xx:xx:xx:xx:xx"
+  bulbaddrgelb: "xx:xx:xx:xx:xx:xx"
