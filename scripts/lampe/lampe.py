@@ -29,6 +29,8 @@ bulbAddrGruen = ""
 statusList = []
 
 def load_config():
+    '''Loads configuration from yml to dictionary
+    '''
     stream = open(path.join(dirname, '../../config.yml'), 'r')
     global config
     config = yaml.load(stream, Loader=yaml.FullLoader)
@@ -38,6 +40,11 @@ def load_config():
     changePayload(config)
 
 def load_bulb(config):
+    '''Loads bulb MAC adresses
+
+    Args:
+        config ([type]): [description]
+    '''
     global bulbAddrRot
     bulbAddrRot = config['bulbs']['bulbaddrrot']
     global bulbAddrGelb
@@ -46,6 +53,11 @@ def load_bulb(config):
     bulbAddrGruen = config['bulbs']['bulbaddrgruen']
 
 def load_jenkins(config):
+    '''Loads Jenkins configuration
+
+    Args:
+        config ([dict]): Dictionary with configuration settings
+    '''
     jenkinsUrl = config['jenkins']['url']
     jenkinsPort = config['jenkins']['port']
     global buildJobs
@@ -55,14 +67,26 @@ def load_jenkins(config):
     historyfile = config['home'] + '/' + config['jenkins']['historyfile']
 
 def load_mattermost(config):
+    '''Loads mattermost configuration
+
+    Args:
+        config (dict): Dictionary with configuration settings
+    '''
     global timestampFile
     timestampFile = config['home'] + '/' + config['mattermost']['updateFile']
 
 def changePayload(config):
+    '''Loads mattermost channel payload
+
+    Args:
+        config (dict): Dictionary with configuration settings
+    '''
     global payload
     payload['channel'] = config['mattermost']['channel']
 
 def main():
+    '''Main function to set bulbs based on Jenkins pipeline status
+    '''
     print("### Starting scan at " + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'))
     bulbRot = getBulb(bulbAddrRot)
     bulbGelb = getBulb(bulbAddrGelb)
@@ -121,14 +145,28 @@ def main():
         print("### Scan done with errors")
 
 def generateBuildUrlFromStatusLink(link):
+    '''Redefine Jenkins build URL based on Jenkins status link
+
+    Args:
+        link (str): String with Jenkins Status URL
+
+    Returns:
+        [str]: String with Jenkins Build URL
+    '''
     print("Incoming link: " + link)
     link = link.replace("buildStatus/text?job=PIA-Agilisierung%2F", "view/Openshift/job/PIA-Agilisierung/job/")
     print("Outgoing link: " + link)
     return link
 
 def postStatusToMattermost(isCool, failedJobs):
+    '''Post status message to mattermost channel
+
+    Args:
+        isCool (bool): status of Jenkins build
+        failedJobs (list): list of failed Jenkins jobs
+    '''
     print("### Post status to Mattermost")
-    lastWritten = readTimestamp()
+    lastWritten = readTimestamp(timestampFile)
     minWaitTime = datetime.timedelta(minutes=config['mattermost']['timeToWait'])
     currentTimeObj = datetime.datetime.now()
     if currentTimeObj - lastWritten > minWaitTime:
@@ -143,15 +181,38 @@ def postStatusToMattermost(isCool, failedJobs):
        	writeTimestamp(timestampFile, currentTimeObj)
 
 def turnOff(bulb):
+    '''Turn off given bulb
+
+    Args:
+        bulb (object): Bulb object
+    '''
     bulb.set_brightness(0)
 
 def turnOn(bulb):
+    '''Turn on given bulb
+
+    Args:
+        bulb (object): Bulb object
+    '''
     bulb.set_brightness(4095)
 
 def hashname(name):
+    '''Hash given string
+
+    Args:
+        name (str): String to be hashed
+
+    Returns:
+        [str]: Hashed string
+    '''
     return str(hashlib.sha1(name.encode()).hexdigest())
 
 def readHistory():
+    '''Read history file with saved history values
+
+    Returns:
+        list: List with hitory
+    '''
     history = {}
     file = open(historyfile, 'r')
     for line in file.readlines():
@@ -162,6 +223,11 @@ def readHistory():
     return history
 
 def writeHistory(history):
+    '''Writes history to file
+
+    Args:
+        history (list): List with history data
+    '''
     file = open(historyfile, 'w')
     file.truncate(0)
     for key, value in history.items():
@@ -169,6 +235,17 @@ def writeHistory(history):
     file.close()
 
 def getBulb(bulbAddr):
+    '''Get bulb object from given MAC addtess
+
+    Args:
+        bulbAddr (str): MAC address of bulb
+
+    Raises:
+        Exception: bulb address not found
+
+    Returns:
+        object: bulb object
+    '''
     bulb = avea.Bulb(bulbAddr)
     if bulb.get_name != "Unknown":
         return bulb
@@ -176,6 +253,12 @@ def getBulb(bulbAddr):
         raise Exception('no bulb found')
 
 def blink(myBulb, times):
+    '''Blinks a given bulb n times
+
+    Args:
+        myBulb (object): bulb object
+        times (int): number of blinks
+    '''
     print("### blink, blink, blink")
     for x in range(0,times):
         myBulb.set_brightness(1)
@@ -183,8 +266,16 @@ def blink(myBulb, times):
         myBulb.set_brightness(4095)
         time.sleep(0.5)
 
-def readTimestamp():
-	file = open(timestampFile, 'r')
+def readTimestamp(filename):
+    '''Reads date-/timestamp from file
+
+    Args:
+        filename (str): filename to be written
+
+    Returns:
+        str: date-/timestamp
+    '''
+	file = open(filename, 'r')
 	savedTimestamp = file.readline()
 	file.close()
 	if len(savedTimestamp)==0:
@@ -194,6 +285,12 @@ def readTimestamp():
 		return datetime.datetime.strptime(savedTimestamp, '%Y-%m-%d %H:%M:%S.%f')
 
 def writeTimestamp(filename, currentTimestamp):
+    '''Writes date-/timestamp to file
+
+    Args:
+        filename (str): filename to be written
+        currentTimestamp (str): date-/timestamp to be written
+    '''
 	print("### Writing to file '" + filename + "' content: " + currentTimestamp.strftime('%Y-%m-%d %H:%M:%S.%f'))
 	file = open(filename, 'w')
 	file.truncate(0)

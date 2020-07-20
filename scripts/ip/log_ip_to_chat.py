@@ -5,10 +5,17 @@ import subprocess
 import sys
 
 def get_ip_address():
+	'''Get IP address from shell script output
+
+	Returns:
+		str: IP address
+	'''
 	# get ip address from console
     return subprocess.check_output(["/home/pi/ampel/scripts/parse_ip_addr.sh", "eth0"]).decode(sys.stdout.encoding)
 
 def main():
+	'''Function to send new IP address to mattermost channel
+	'''
 	mattermostWebHook = 'https://<mattermost channel url>'
 	print("Writing to Mattermost: " + mattermostWebHook)
 	payload = {"attachments":
