@@ -45,7 +45,7 @@ Die beiliegende [config.yml.sample](config.yml.sample) beinhaltet die erforderli
  [Time]
  NTP=ntp1.de.top.com
  FallbackNTP=ntp2.de.top.com
- 
+
  im Anschluss `sudo timedatectl set-ntp true` ausführen
 
 - neue ssh keys generiert und ssh aktiviert
@@ -99,7 +99,7 @@ Dies sollte gemacht werden, damit bspw. der Eintrag im Crontab nicht immer wiede
 Ordner und Datei (home/pi/logs/cronlog) vorher anlegen!
 
 - ViewStatus im Jenkins ändern
- Anonymus muss Zugriff auf den ViewStatus haben, damit er ihn auslesen kann. Dieser kann bspw. auf Ordnerebene vergeben werden. 
+ Anonymus muss Zugriff auf den ViewStatus haben, damit er ihn auslesen kann. Dieser kann bspw. auf Ordnerebene vergeben werden.
 
 - scripts/lampe/lampe.py anpassen
 
